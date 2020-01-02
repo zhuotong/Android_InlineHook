@@ -1,2 +1,2 @@
-include ':app', ':myhkzz', ':myihk', ':mysubstrate', ':mysighk'
+include ':myihk'
 rootProject.name='My InHk'

@@ -13,6 +13,9 @@
 
 #include "iModel.h"
 
+double retDou(double a, double b);
+float retFlo(float a, float b);
+
 /**
  *  用户自定义的stub函数，嵌入在hook点中，可直接操作寄存器等
  * @param regs      寄存器结构，保存寄存器当前hook点的寄存器信息
@@ -35,8 +38,8 @@ void onPreCallBack(my_pt_regs *regs, HK_INFO *pInfo) //参数regs就是指向栈
 #if defined(__aarch64__)
 
     LE("tid=%d, onPreCallBack:%s, "
-       "x0=0x%llx, x1=0x%llx, x2=0x%llx, x3=0x%llx, x4=0x%llx, x5=0x%llx, x6=0x%llx, x7=0x%llx, x8=0x%llx, x9=0x%llx, x10=0x%llx,"
-       " x11=0x%llx, x12=0x%llx, x13=0x%llx, x14=0x%llx, x15=0x%llx, x16=0x%llx, x17=0x%llx, x18=0x%llx, x19=0x%llx, x20=0x%llx, "
+       "x0=0x%llx, x1=0x%llx, x2=0x%llx, x3=0x%llx, x4=0x%llx, x5=0x%llx, x6=0x%llx, x7=0x%llx, x8=0x%llx, x9=0x%llx, x10=0x%llx, "
+       "x11=0x%llx, x12=0x%llx, x13=0x%llx, x14=0x%llx, x15=0x%llx, x16=0x%llx, x17=0x%llx, x18=0x%llx, x19=0x%llx, x20=0x%llx, "
        "x21=0x%llx, x22=0x%llx, x23=0x%llx, x24=0x%llx, x25=0x%llx, x26=0x%llx, x27=0x%llx, x28=0x%llx, x29/FP=0x%llx, x30/LR=0x%llx, "
        "cur_sp=%p, ori_sp=%p, ori_sp/31=0x%llx, NZCV/32=0x%llx, x0/pc/33=0x%llx, cur_pc=%llx, arg8=%x, arg9=%x, arg10=%x, arg11=%x, "
        "arg12=%x, arg13=%x;"
@@ -46,9 +49,38 @@ void onPreCallBack(my_pt_regs *regs, HK_INFO *pInfo) //参数regs就是指向栈
        regs->uregs[12], regs->uregs[13], regs->uregs[14], regs->uregs[15], regs->uregs[16], regs->uregs[17],
        regs->uregs[18], regs->uregs[19], regs->uregs[20], regs->uregs[21], regs->uregs[22], regs->uregs[23],
        regs->uregs[24], regs->uregs[25], regs->uregs[26], regs->uregs[27], regs->uregs[28], regs->uregs[29], regs->uregs[30],
-       regs, ((char*)regs + 0x110), regs->uregs[31], regs->uregs[32], regs->uregs[33], regs->pc,
+       regs, /*((char*)regs + 0x110)*/((char*)regs + 0x310), regs->uregs[31], regs->uregs[32], regs->uregs[33], regs->pc,
        SP(0), SP(1), SP(2), SP(3), SP(4), SP(5)
     );
+
+    LE("d0=%.15f, d1=%.15f, d2=%.15f, d3=%.15f, d4=%.15f, d5=%.15f, d6=%.15f, d7=%.15f, "
+        "d8=%.15f, d9=%.15f, d10=%.15f, d11=%.15f, d12=%.15f, d13=%.15f, d14=%.15f, d15=%.15f, "
+        "d16=%.15f, d17=%.15f, d18=%.15f, d19=%.15f, d20=%.15f, d21=%.15f, d22=%.15f, d23=%.15f, "
+        "d24=%.15f, d25=%.15f, d26=%.15f, d27=%.15f, d28=%.15f, d29=%.15f, d30=%.15f, d31=%.15f;",
+        DREGS(0), DREGS(1), DREGS(2), DREGS(3), DREGS(4), DREGS(5), DREGS(6), DREGS(7),
+        DREGS(8), DREGS(9), DREGS(10), DREGS(11), DREGS(12), DREGS(13), DREGS(14), DREGS(15),
+        DREGS(16), DREGS(17), DREGS(18), DREGS(19), DREGS(20), DREGS(21), DREGS(22), DREGS(23),
+        DREGS(24), DREGS(25), DREGS(26), DREGS(27), DREGS(28), DREGS(29), DREGS(30), DREGS(31)
+    );
+    LE("s0=%.15f, s1=%.15f, s2=%.15f, s3=%.15f, s4=%.15f, s5=%.15f, s6=%.15f, s7=%.15f, "
+        "s8=%.15f, s9=%.15f, s10=%.15f, s11=%.15f, s12=%.15f, s13=%.15f, s14=%.15f, s15=%.15f, "
+        "s16=%.15f, s17=%.15f, s18=%.15f, s19=%.15f, s20=%.15f, s21=%.15f, s22=%.15f, s23=%.15f, "
+        "s24=%.15f, s25=%.15f, s26=%.15f, s27=%.15f, s28=%.15f, s29=%.15f, s30=%.15f, s31=%.15f;",
+        FREGS(0), FREGS(1), FREGS(2), FREGS(3), FREGS(4), FREGS(5), FREGS(6), FREGS(7),
+        FREGS(8), FREGS(9), FREGS(10), FREGS(11), FREGS(12), FREGS(13), FREGS(14), FREGS(15),
+        FREGS(16), FREGS(17), FREGS(18), FREGS(19), FREGS(20), FREGS(21), FREGS(22), FREGS(23),
+        FREGS(24), FREGS(25), FREGS(26), FREGS(27), FREGS(28), FREGS(29), FREGS(30), FREGS(31)
+    );
+    LE("q0=%.15f, q1=%.15f, q2=%.15f, q3=%.15f, q4=%.15f, q5=%.15f, q6=%.15f, q7=%.15f, "
+        "q8=%.15f, q9=%.15f, q10=%.15f, q11=%.15f, q12=%.15f, q13=%.15f, q14=%.15f, q15=%.15f, "
+        "q16=%.15f, q17=%.15f, q18=%.15f, q19=%.15f, q20=%.15f, q21=%.15f, q22=%.15f, q23=%.15f, "
+        "q24=%.15f, q25=%.15f, q26=%.15f, q27=%.15f, q28=%.15f, q29=%.15f, q30=%.15f, q31=%.15f;",
+        QREGS(0), QREGS(1), QREGS(2), QREGS(3), QREGS(4), QREGS(5), QREGS(6), QREGS(7),
+        QREGS(8), QREGS(9), QREGS(10), QREGS(11), QREGS(12), QREGS(13), QREGS(14), QREGS(15),
+        QREGS(16), QREGS(17), QREGS(18), QREGS(19), QREGS(20), QREGS(21), QREGS(22), QREGS(23),
+        QREGS(24), QREGS(25), QREGS(26), QREGS(27), QREGS(28), QREGS(29), QREGS(30), QREGS(31)
+    );
+
 
 #elif defined(__arm__)
     LE("tid=%d, onPreCallBack:%s, "
@@ -69,7 +101,20 @@ void onPreCallBack(my_pt_regs *regs, HK_INFO *pInfo) //参数regs就是指向栈
         if (pInfo->pBeHookAddr == open && regs->uregs[0]) {
             const char* name = (const char *)(regs->uregs[0]);
             LE("onPreCallBack: open: %s , %o, %o", name, regs->uregs[1], (mode_t)regs->uregs[2]);
-        }
+        } /*else if (pInfo->pBeHookAddr == retDou) {
+#if defined(__aarch64__)
+//            LE("d0=%.15f, d1=%.15f, d2=%.15f, d3=%.15f", regs->neon.dregs[0], regs->neon.dregs[1], regs->neon.dregs[2], regs->neon.dregs[3]);
+            LE("d0=%.15f, d1=%.15f, d2=%.15f, d3=%.15f", regs->neon.dregs(0), regs->neon.dregs(1), regs->neon.dregs(2), regs->neon.dregs(3));
+            LE("s0=%.15f, s1=%.15f, s2=%.15f, s3=%.15f", (float)regs->neon.fregs(0), regs->neon.fregs(1), regs->neon.fregs(2), regs->neon.fregs(3));
+            LE("q0=%.15llf, q1=%.15llf, q2=%.15llf, q3=%.15llf", (long double)regs->neon.qregs[0], regs->neon.qregs[1], regs->neon.qregs[2], regs->neon.qregs[3]);
+#endif
+        } else if (pInfo->pBeHookAddr == retFlo) {
+#if defined(__aarch64__)
+            LE("d0=%.15f, d1=%.15f, d2=%.15f, d3=%.15f", regs->neon.dregs(0), regs->neon.dregs(1), regs->neon.dregs(2), regs->neon.dregs(3));
+            LE("s0=%.15f, s1=%.15f, s2=%.15f, s3=%.15f", (float)regs->neon.fregs(0), regs->neon.fregs(1), regs->neon.fregs(2), regs->neon.fregs(3));
+            LE("q0=%.15llf, q1=%.15llf, q2=%.15llf, q3=%.15llf", (long double)regs->neon.qregs[0], regs->neon.qregs[1], regs->neon.qregs[2], regs->neon.qregs[3]);
+#endif
+        }*/
     }
 
 }
@@ -124,8 +169,36 @@ void onCallBack(my_pt_regs *regs, HK_INFO *pInfo) //参数regs就是指向栈上
        regs->uregs[12], regs->uregs[13], regs->uregs[14], regs->uregs[15], regs->uregs[16], regs->uregs[17],
        regs->uregs[18], regs->uregs[19], regs->uregs[20], regs->uregs[21], regs->uregs[22], regs->uregs[23],
        regs->uregs[24], regs->uregs[25], regs->uregs[26], regs->uregs[27], regs->uregs[28], regs->uregs[29], regs->uregs[30],
-       regs, ((char*)regs + 0x110), regs->uregs[31], regs->uregs[32], regs->uregs[33], regs->pc,
+       regs, /*((char*)regs + 0x110)*/((char*)regs + 0x310), regs->uregs[31], regs->uregs[32], regs->uregs[33], regs->pc,
        SP(0), SP(1), SP(2), SP(3), SP(4), SP(5)
+    );
+
+    LE("d0=%.15f, d1=%.15f, d2=%.15f, d3=%.15f, d4=%.15f, d5=%.15f, d6=%.15f, d7=%.15f, "
+        "d8=%.15f, d9=%.15f, d10=%.15f, d11=%.15f, d12=%.15f, d13=%.15f, d14=%.15f, d15=%.15f, "
+        "d16=%.15f, d17=%.15f, d18=%.15f, d19=%.15f, d20=%.15f, d21=%.15f, d22=%.15f, d23=%.15f, "
+        "d24=%.15f, d25=%.15f, d26=%.15f, d27=%.15f, d28=%.15f, d29=%.15f, d30=%.15f, d31=%.15f;",
+        DREGS(0), DREGS(1), DREGS(2), DREGS(3), DREGS(4), DREGS(5), DREGS(6), DREGS(7),
+        DREGS(8), DREGS(9), DREGS(10), DREGS(11), DREGS(12), DREGS(13), DREGS(14), DREGS(15),
+        DREGS(16), DREGS(17), DREGS(18), DREGS(19), DREGS(20), DREGS(21), DREGS(22), DREGS(23),
+        DREGS(24), DREGS(25), DREGS(26), DREGS(27), DREGS(28), DREGS(29), DREGS(30), DREGS(31)
+    );
+    LE("s0=%.15f, s1=%.15f, s2=%.15f, s3=%.15f, s4=%.15f, s5=%.15f, s6=%.15f, s7=%.15f, "
+        "s8=%.15f, s9=%.15f, s10=%.15f, s11=%.15f, s12=%.15f, s13=%.15f, s14=%.15f, s15=%.15f, "
+        "s16=%.15f, s17=%.15f, s18=%.15f, s19=%.15f, s20=%.15f, s21=%.15f, s22=%.15f, s23=%.15f, "
+        "s24=%.15f, s25=%.15f, s26=%.15f, s27=%.15f, s28=%.15f, s29=%.15f, s30=%.15f, s31=%.15f;",
+        FREGS(0), FREGS(1), FREGS(2), FREGS(3), FREGS(4), FREGS(5), FREGS(6), FREGS(7),
+        FREGS(8), FREGS(9), FREGS(10), FREGS(11), FREGS(12), FREGS(13), FREGS(14), FREGS(15),
+        FREGS(16), FREGS(17), FREGS(18), FREGS(19), FREGS(20), FREGS(21), FREGS(22), FREGS(23),
+        FREGS(24), FREGS(25), FREGS(26), FREGS(27), FREGS(28), FREGS(29), FREGS(30), FREGS(31)
+    );
+    LE("q0=%.15f, q1=%.15f, q2=%.15f, q3=%.15f, q4=%.15f, q5=%.15f, q6=%.15f, q7=%.15f, "
+        "q8=%.15f, q9=%.15f, q10=%.15f, q11=%.15f, q12=%.15f, q13=%.15f, q14=%.15f, q15=%.15f, "
+        "q16=%.15f, q17=%.15f, q18=%.15f, q19=%.15f, q20=%.15f, q21=%.15f, q22=%.15f, q23=%.15f, "
+        "q24=%.15f, q25=%.15f, q26=%.15f, q27=%.15f, q28=%.15f, q29=%.15f, q30=%.15f, q31=%.15f;",
+        QREGS(0), QREGS(1), QREGS(2), QREGS(3), QREGS(4), QREGS(5), QREGS(6), QREGS(7),
+        QREGS(8), QREGS(9), QREGS(10), QREGS(11), QREGS(12), QREGS(13), QREGS(14), QREGS(15),
+        QREGS(16), QREGS(17), QREGS(18), QREGS(19), QREGS(20), QREGS(21), QREGS(22), QREGS(23),
+        QREGS(24), QREGS(25), QREGS(26), QREGS(27), QREGS(28), QREGS(29), QREGS(30), QREGS(31)
     );
 
 #elif defined(__arm__)
@@ -594,12 +667,39 @@ void test_dlopen() {
 
 }
 
+//debug下测试，release会被优化，如需测试才加一些代码加长。
+double retDou(double a, double b){
+    return a + b;
+}
+
+float retFlo(float a, float b){
+    return a + b;
+}
+
+float retFlo_(int i, float a, float b){
+    return i+ a + b;
+}
+
+void test_dump_neon(){
+    if (dump((void *)(retDou), onPreCallBack, NULL, "retDou") != success) {
+        LE("hook retDou error");
+    }
+
+    LE("%.15f", retDou(0.123456789, 0.2938475643));
+
+    if (dump((void *)(retFlo), onPreCallBack, NULL, "retFlo") != success) {
+        LE("hook retFlo error");
+    }
+    LE("%.15f", retFlo(0.123456789, 0.2938475643));
+
+}
 
 JNIEXPORT jint JNI_OnLoad(JavaVM* vm, void* reserved){
     LE("JNI_OnLoad=%p", JNI_OnLoad);
 
+    test_dump_neon();
 
-    test_dump();
+//    test_dump();
 //    test_dump_with_ret();
 //    test_dump_ret();
 //    test_dump_just_ret();
@@ -628,7 +728,7 @@ extern "C" JNIEXPORT void JNICALL
 Java_com_zhuotong_myihk_MainActivity_testdlopen(
         JNIEnv *env,
         jobject /* this */) {
-
+    LE("%f", retDou(0.1, 0.2));
     test_dlopen();
 }
 

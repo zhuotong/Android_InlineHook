@@ -11,7 +11,7 @@ ifeq "$(TARGET_ARCH_ABI)" "arm64-v8a"
 #LOCAL_ARM_MODE := arm
 LOCAL_MODULE    			:= replace
 LOCAL_C_INCLUDES 			:= $(LOCAL_PATH)/../../../include $(LOCAL_PATH)/../../asm
-LOCAL_SRC_FILES 			:= ../mhk.c replace.c lr.cpp ../fixPCOpcode.c ../../asm/replace.s
+LOCAL_SRC_FILES 			:= ../mhk.c replace.c lr.cpp ../fixPCOpcode.c ../../asm/replace_neon.s
 
 
 include $(BUILD_STATIC_LIBRARY)

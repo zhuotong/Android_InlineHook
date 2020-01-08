@@ -43,11 +43,28 @@
 
 
 #if defined(__aarch64__)
+
+union my_neon_regs {
+    long double qregs[32];
+    double dregs[32][2];
+//    float fregs[64*2];
+    float fregs[32][4];
+};
+
+#define DREGS(i) regs->neon.dregs(i)
+#define FREGS(i) regs->neon.fregs(i)
+#define QREGS(i) regs->neon.qregs[i]
+
+#define dregs(i) dregs[i][0]
+#define fregs(i) fregs[i][0]
+
 struct my_pt_regs {
+    union my_neon_regs neon;
     __u64 uregs[31];
     __u64 sp;
     __u64 pstate;       //有时间应该修复，pc在前，但是涉及到栈和生成shellcode都要改，先这么用吧，和系统结构体有这点不同
     __u64 pc;
+
 };
 
 #define ARM_lr uregs[30]

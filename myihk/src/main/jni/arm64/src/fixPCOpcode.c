@@ -566,32 +566,22 @@ int fixPCOpcodeArm64(uint64_t pc, uint64_t lr, uint32_t instruction, uint32_t *t
         return 4*trampoline_pos;
     }
 	if (type == B_ARM64) {
-		//STP X_tmp1, X_tmp2, [SP, -0x10]
-		//LDR X_tmp2, ?
-		//[target instruction fix code] if you want
-		//BR X_tmp2
-		//B 8
-		//PC+imm*4
-        LE("B_ARM64");
+
+		LE("BL_ARM64");
 		uint32_t target_ins;
 		uint32_t imm26;
 		uint64_t value;
 
-		imm26 = instruction & 0x3FFFFFF;
+		imm26 = instruction & 0xFFFFFF;
 		value = pc + imm26*4;
-		if((imm26>>25)==1){
-			value = pc - 4*(0x3ffffff-imm26+1);
-		}
 		target_ins = *((uint32_t *)value);
-		LOGI("target_ins : %x",target_ins);
+		LOGI("%p, target_ins : %x",value, target_ins);
 
-		trampoline_instructions[trampoline_pos++] = 0xa93f03e0; //STP X0, X0, [SP, -0x10] default
-		trampoline_instructions[trampoline_pos++] = 0x58000080; //LDR X0, 16
-		trampoline_instructions[trampoline_pos++] = target_ins; //[target instruction fix code] if you want
-		trampoline_instructions[trampoline_pos++] = 0xd61f0000; //BR X0
-		trampoline_instructions[trampoline_pos++] = 0x14000002; //B 8
-		trampoline_instructions[trampoline_pos++] = (uint32_t)(value >> 32);
+		trampoline_instructions[trampoline_pos++] = 0x5800007E; //LDR LR, 12
+		trampoline_instructions[trampoline_pos++] = 0xD63F03C0; //BLR LR
+		trampoline_instructions[trampoline_pos++] = 0x14000003; //B 12
 		trampoline_instructions[trampoline_pos++] = (uint32_t)(value & 0xffffffff);
+		trampoline_instructions[trampoline_pos++] = (uint32_t)(value >> 32);
 
         return 4*trampoline_pos;
     } else if (type == BL_ARM64_b) {

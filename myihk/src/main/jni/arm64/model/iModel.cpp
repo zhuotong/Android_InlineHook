@@ -126,8 +126,36 @@ void remove(HK_INFO *info){
        regs->uregs[12], regs->uregs[13], regs->uregs[14], regs->uregs[15], regs->uregs[16], regs->uregs[17],
        regs->uregs[18], regs->uregs[19], regs->uregs[20], regs->uregs[21], regs->uregs[22], regs->uregs[23],
        regs->uregs[24], regs->uregs[25], regs->uregs[26], regs->uregs[27], regs->uregs[28], regs->uregs[29], regs->uregs[30],
-       regs, ((char*)regs + 0x110), regs->uregs[31], regs->uregs[32], regs->uregs[33], regs->pc,
+       regs, /*((char*)regs + 0x110)*/((char*)regs + 0x310), regs->uregs[31], regs->uregs[32], regs->uregs[33], regs->pc,
        SP(0), SP(1), SP(2), SP(3), SP(4), SP(5)
+    );
+
+    LE("d0=%.15f, d1=%.15f, d2=%.15f, d3=%.15f, d4=%.15f, d5=%.15f, d6=%.15f, d7=%.15f, "
+       "d8=%.15f, d9=%.15f, d10=%.15f, d11=%.15f, d12=%.15f, d13=%.15f, d14=%.15f, d15=%.15f, "
+       "d16=%.15f, d17=%.15f, d18=%.15f, d19=%.15f, d20=%.15f, d21=%.15f, d22=%.15f, d23=%.15f, "
+       "d24=%.15f, d25=%.15f, d26=%.15f, d27=%.15f, d28=%.15f, d29=%.15f, d30=%.15f, d31=%.15f;",
+       DREGS(0), DREGS(1), DREGS(2), DREGS(3), DREGS(4), DREGS(5), DREGS(6), DREGS(7),
+       DREGS(8), DREGS(9), DREGS(10), DREGS(11), DREGS(12), DREGS(13), DREGS(14), DREGS(15),
+       DREGS(16), DREGS(17), DREGS(18), DREGS(19), DREGS(20), DREGS(21), DREGS(22), DREGS(23),
+       DREGS(24), DREGS(25), DREGS(26), DREGS(27), DREGS(28), DREGS(29), DREGS(30), DREGS(31)
+    );
+    LE("s0=%.15f, s1=%.15f, s2=%.15f, s3=%.15f, s4=%.15f, s5=%.15f, s6=%.15f, s7=%.15f, "
+       "s8=%.15f, s9=%.15f, s10=%.15f, s11=%.15f, s12=%.15f, s13=%.15f, s14=%.15f, s15=%.15f, "
+       "s16=%.15f, s17=%.15f, s18=%.15f, s19=%.15f, s20=%.15f, s21=%.15f, s22=%.15f, s23=%.15f, "
+       "s24=%.15f, s25=%.15f, s26=%.15f, s27=%.15f, s28=%.15f, s29=%.15f, s30=%.15f, s31=%.15f;",
+       FREGS(0), FREGS(1), FREGS(2), FREGS(3), FREGS(4), FREGS(5), FREGS(6), FREGS(7),
+       FREGS(8), FREGS(9), FREGS(10), FREGS(11), FREGS(12), FREGS(13), FREGS(14), FREGS(15),
+       FREGS(16), FREGS(17), FREGS(18), FREGS(19), FREGS(20), FREGS(21), FREGS(22), FREGS(23),
+       FREGS(24), FREGS(25), FREGS(26), FREGS(27), FREGS(28), FREGS(29), FREGS(30), FREGS(31)
+    );
+    LE("q0=%.15f, q1=%.15f, q2=%.15f, q3=%.15f, q4=%.15f, q5=%.15f, q6=%.15f, q7=%.15f, "
+       "q8=%.15f, q9=%.15f, q10=%.15f, q11=%.15f, q12=%.15f, q13=%.15f, q14=%.15f, q15=%.15f, "
+       "q16=%.15f, q17=%.15f, q18=%.15f, q19=%.15f, q20=%.15f, q21=%.15f, q22=%.15f, q23=%.15f, "
+       "q24=%.15f, q25=%.15f, q26=%.15f, q27=%.15f, q28=%.15f, q29=%.15f, q30=%.15f, q31=%.15f;",
+       QREGS(0), QREGS(1), QREGS(2), QREGS(3), QREGS(4), QREGS(5), QREGS(6), QREGS(7),
+       QREGS(8), QREGS(9), QREGS(10), QREGS(11), QREGS(12), QREGS(13), QREGS(14), QREGS(15),
+       QREGS(16), QREGS(17), QREGS(18), QREGS(19), QREGS(20), QREGS(21), QREGS(22), QREGS(23),
+       QREGS(24), QREGS(25), QREGS(26), QREGS(27), QREGS(28), QREGS(29), QREGS(30), QREGS(31)
     );
 
     if (pInfo) {
@@ -171,8 +199,36 @@ void default_onCallBack(my_pt_regs *regs, HK_INFO *pInfo) //参数regs就是指�
        regs->uregs[12], regs->uregs[13], regs->uregs[14], regs->uregs[15], regs->uregs[16], regs->uregs[17],
        regs->uregs[18], regs->uregs[19], regs->uregs[20], regs->uregs[21], regs->uregs[22], regs->uregs[23],
        regs->uregs[24], regs->uregs[25], regs->uregs[26], regs->uregs[27], regs->uregs[28], regs->uregs[29], regs->uregs[30],
-       regs, ((char*)regs + 0x110), regs->uregs[31], regs->uregs[32], regs->uregs[33], regs->pc,
+       regs, /*((char*)regs + 0x110)*/((char*)regs + 0x310), regs->uregs[31], regs->uregs[32], regs->uregs[33], regs->pc,
        SP(0), SP(1), SP(2), SP(3), SP(4), SP(5)
+    );
+
+    LE("d0=%.15f, d1=%.15f, d2=%.15f, d3=%.15f, d4=%.15f, d5=%.15f, d6=%.15f, d7=%.15f, "
+       "d8=%.15f, d9=%.15f, d10=%.15f, d11=%.15f, d12=%.15f, d13=%.15f, d14=%.15f, d15=%.15f, "
+       "d16=%.15f, d17=%.15f, d18=%.15f, d19=%.15f, d20=%.15f, d21=%.15f, d22=%.15f, d23=%.15f, "
+       "d24=%.15f, d25=%.15f, d26=%.15f, d27=%.15f, d28=%.15f, d29=%.15f, d30=%.15f, d31=%.15f;",
+       DREGS(0), DREGS(1), DREGS(2), DREGS(3), DREGS(4), DREGS(5), DREGS(6), DREGS(7),
+       DREGS(8), DREGS(9), DREGS(10), DREGS(11), DREGS(12), DREGS(13), DREGS(14), DREGS(15),
+       DREGS(16), DREGS(17), DREGS(18), DREGS(19), DREGS(20), DREGS(21), DREGS(22), DREGS(23),
+       DREGS(24), DREGS(25), DREGS(26), DREGS(27), DREGS(28), DREGS(29), DREGS(30), DREGS(31)
+    );
+    LE("s0=%.15f, s1=%.15f, s2=%.15f, s3=%.15f, s4=%.15f, s5=%.15f, s6=%.15f, s7=%.15f, "
+       "s8=%.15f, s9=%.15f, s10=%.15f, s11=%.15f, s12=%.15f, s13=%.15f, s14=%.15f, s15=%.15f, "
+       "s16=%.15f, s17=%.15f, s18=%.15f, s19=%.15f, s20=%.15f, s21=%.15f, s22=%.15f, s23=%.15f, "
+       "s24=%.15f, s25=%.15f, s26=%.15f, s27=%.15f, s28=%.15f, s29=%.15f, s30=%.15f, s31=%.15f;",
+       FREGS(0), FREGS(1), FREGS(2), FREGS(3), FREGS(4), FREGS(5), FREGS(6), FREGS(7),
+       FREGS(8), FREGS(9), FREGS(10), FREGS(11), FREGS(12), FREGS(13), FREGS(14), FREGS(15),
+       FREGS(16), FREGS(17), FREGS(18), FREGS(19), FREGS(20), FREGS(21), FREGS(22), FREGS(23),
+       FREGS(24), FREGS(25), FREGS(26), FREGS(27), FREGS(28), FREGS(29), FREGS(30), FREGS(31)
+    );
+    LE("q0=%.15f, q1=%.15f, q2=%.15f, q3=%.15f, q4=%.15f, q5=%.15f, q6=%.15f, q7=%.15f, "
+       "q8=%.15f, q9=%.15f, q10=%.15f, q11=%.15f, q12=%.15f, q13=%.15f, q14=%.15f, q15=%.15f, "
+       "q16=%.15f, q17=%.15f, q18=%.15f, q19=%.15f, q20=%.15f, q21=%.15f, q22=%.15f, q23=%.15f, "
+       "q24=%.15f, q25=%.15f, q26=%.15f, q27=%.15f, q28=%.15f, q29=%.15f, q30=%.15f, q31=%.15f;",
+       QREGS(0), QREGS(1), QREGS(2), QREGS(3), QREGS(4), QREGS(5), QREGS(6), QREGS(7),
+       QREGS(8), QREGS(9), QREGS(10), QREGS(11), QREGS(12), QREGS(13), QREGS(14), QREGS(15),
+       QREGS(16), QREGS(17), QREGS(18), QREGS(19), QREGS(20), QREGS(21), QREGS(22), QREGS(23),
+       QREGS(24), QREGS(25), QREGS(26), QREGS(27), QREGS(28), QREGS(29), QREGS(30), QREGS(31)
     );
 
     if (pInfo) {
